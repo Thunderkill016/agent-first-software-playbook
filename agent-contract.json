@@ -3,6 +3,7 @@
   "purpose": "Vendor-neutral repository contract for coding agents",
   "canonicalInstructionFile": "AGENTS.md",
   "contextRouter": "docs/context/README.md",
+  "minimumNodeMajor": 24,
   "maxHotInstructionLines": 180,
   "stableCheckName": "playbook-policy",
   "requiredFiles": [
