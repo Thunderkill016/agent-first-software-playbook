@@ -16,6 +16,8 @@ function git(args) {
   }
 }
 
+const nodeMajor = Number(process.versions.node.split('.')[0]);
+const runtimeOk = nodeMajor >= policy.minimumNodeMajor;
 const missing = policy.requiredFiles.filter((rel) => !exists(rel));
 const branch = git(['branch', '--show-current']);
 const head = git(['rev-parse', 'HEAD']);
@@ -34,12 +36,17 @@ function suggestedRisk(files) {
 
 const risk = suggestedRisk(changedFiles);
 const result = {
-  ok: missing.length === 0,
+  ok: missing.length === 0 && runtimeOk,
   schemaVersion: policy.schemaVersion,
   canonicalInstructionFile: policy.canonicalInstructionFile,
   contextRouter: policy.contextRouter,
+  runtime: {
+    node: process.versions.node,
+    minimumNodeMajor: policy.minimumNodeMajor,
+    ok: runtimeOk
+  },
   branch,
-  head,
+  checkedCommit: head,
   changedFiles,
   suggestedRisk: risk.risk,
   suggestedRiskReason: risk.reason,
@@ -48,9 +55,11 @@ const result = {
   alwaysChecks: policy.alwaysChecks,
   stableCheckName: policy.stableCheckName,
   note: 'Diagnostic only: it grants no permission and does not prove merge/deployment readiness.',
-  next: missing.length
-    ? 'Repair repository knowledge routing before implementation.'
-    : 'Read affected files, CURRENT_STATE, CURRENT_WORK and routed context; then confirm risk and permissions against the actual task.'
+  next: !runtimeOk
+    ? `Use Node ${policy.minimumNodeMajor}+ before relying on repository tooling.`
+    : missing.length
+      ? 'Repair repository knowledge routing before implementation.'
+      : 'Read affected files, CURRENT_STATE, CURRENT_WORK and routed context; then confirm risk and permissions against the actual task.'
 };
 
 if (json) console.log(JSON.stringify(result, null, 2));
@@ -58,8 +67,9 @@ else {
   console.log(`Agent readiness: ${result.ok ? 'PASS' : 'FAIL'}`);
   console.log(`Instruction authority: ${result.canonicalInstructionFile}`);
   console.log(`Context router: ${result.contextRouter}`);
+  console.log(`Node: ${result.runtime.node} (requires ${policy.minimumNodeMajor}+)`);
   if (branch) console.log(`Branch: ${branch}`);
-  if (head) console.log(`Head: ${head}`);
+  if (head) console.log(`Checked commit: ${head}`);
   if (risk.risk !== null) console.log(`Suggested risk: Class ${risk.risk} — ${risk.reason}`);
   if (missing.length) console.log(`Missing: ${missing.join(', ')}`);
   console.log(`Always run: ${policy.alwaysChecks.join(' ; ')}`);
