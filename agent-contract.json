@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Vendor-neutral repository contract for coding agents",
+  "canonicalInstructionFile": "AGENTS.md",
+  "contextRouter": "docs/context/README.md",
+  "minimumNodeMajor": 24,
+  "maxHotInstructionLines": 180,
+  "stableCheckName": "playbook-policy",
+  "requiredFiles": [
+    "README.md",
+    "AGENTS.md",
+    "agent-contract.json",
+    "ARCHITECTURE.md",
+    "docs/CURRENT_STATE.md",
+    "docs/CURRENT_WORK.md",
+    "docs/PRODUCT.md",
+    "docs/RISK_MODEL.md",
+    "docs/WORKFLOW.md",
+    "docs/context/README.md",
+    "docs/engineering/AGENT_OPERATING_MODEL.md",
+    "docs/engineering/AGENT_INTEROPERABILITY.md",
+    "docs/engineering/ENVIRONMENT_CONTRACT.md",
+    "docs/engineering/RESEARCH_PROTOCOL.md",
+    "docs/engineering/SECURE_DEVELOPMENT.md",
+    "docs/engineering/VERIFICATION_MATRIX.md",
+    "docs/FAILURE_REGISTER.md",
+    "docs/QUALITY_SCORE.md",
+    "templates/AGENTS.example.md",
+    "templates/AGENT_TASK.md",
+    "templates/WORK_PACKET.md",
+    "templates/HANDOFF.md",
+    "templates/RESEARCH_NOTE.md",
+    "templates/EVALUATION.md",
+    "templates/FAILURE_RECORD.md"
+  ],
+  "currentWorkSections": [
+    "NOW",
+    "NEXT",
+    "BLOCKED",
+    "OWNER DECISION",
+    "HOLD",
+    "RECENTLY DONE"
+  ],
+  "executionStates": [
+    "discovery",
+    "specified",
+    "planned",
+    "implementing",
+    "evaluating",
+    "ready_for_review",
+    "merged",
+    "deployed",
+    "accepted"
+  ],
+  "riskClasses": {
+    "0": "docs/mechanical",
+    "1": "bounded executable change",
+    "2": "user-flow/UI/multi-component behavior",
+    "3": "security/data/auth/financial/CI/provider/operations/high-consequence"
+  },
+  "permissionScopes": [
+    "read_only",
+    "branch_write",
+    "provider_read",
+    "provider_write_approved",
+    "production_data_write_approved"
+  ],
+  "alwaysChecks": [
+    "npm run check:knowledge",
+    "npm run check:public-safety"
+  ]
+}

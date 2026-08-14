@@ -1,0 +1,34 @@
+name: Playbook policy
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playbook-policy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playbook-policy:
+    name: playbook-policy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Verify repository contracts
+        run: npm run verify
+      - name: Agent readiness diagnostic
+        run: npm run agent:doctor -- --json

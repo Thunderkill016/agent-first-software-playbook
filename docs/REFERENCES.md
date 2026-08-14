@@ -1,77 +1,135 @@
-# Public Engineering References
+# Primary Engineering References
 
-This playbook is repository-specific guidance informed by public engineering practice. External sources are evidence and inspiration; they do not override the repository's own authority.
+**Last reviewed:** 2026-08-15
 
-## OpenAI — Harness engineering
+External sources are evidence for this playbook, not repository authority. Tool behavior changes; re-check current official documentation before relying on a discovery/permission detail.
 
-https://openai.com/index/harness-engineering/
+## Agent repository instructions and context
 
-Key ideas used here:
+### AGENTS.md — open format
 
-- humans steer while agents execute;
-- repository-local, versioned knowledge makes a system legible to agents;
-- missing tools/guardrails should be treated as environment design problems;
-- architecture should enforce important invariants without micromanaging every implementation;
-- autonomy increases as testing, review, feedback, and recovery become encoded in the environment.
+- https://agents.md/
+- https://github.com/agentsmd/agents.md
 
-## OpenAI — How OpenAI uses Codex
+Establishes: a simple vendor-neutral `AGENTS.md` format, root and nested project guidance, and broad ecosystem adoption. The format is a discovery/context convention, not an enforcement or security boundary.
 
-https://openai.com/business/guides-and-resources/how-openai-uses-codex/
+### OpenAI — Codex / Harness Engineering
 
-Key ideas used here:
+- https://openai.com/index/introducing-codex/
+- https://openai.com/index/harness-engineering/
 
-- structure agent work like a strong GitHub issue;
-- keep tasks well scoped;
-- use `AGENTS.md` for persistent repository context;
-- iteratively improve the agent's development environment rather than relying only on better prompts.
+Establishes: repository `AGENTS.md`, configured development environments, reliable tests, repository knowledge as system of record, short instruction map + progressive disclosure, mechanical knowledge checks, application/runtime legibility, feedback-loop/guardrail improvement.
 
-## Google Engineering Practices — Small CLs
+### Google — Jules
 
-https://google.github.io/eng-practices/review/developer/small-cls.html
+- https://jules.google/docs/
+- https://jules.google/docs/environment/
 
-Key ideas used here:
+Establishes: automatic root `AGENTS.md` discovery, isolated short-lived VM execution, repository/environment setup, test-oriented task execution and repository-scoped work.
 
-- one self-contained change is easier to review and reason about;
-- related tests should travel with behavior changes;
-- smaller changes are easier to merge, roll back, and design well;
-- refactors should usually be separated from functional changes.
+### GitHub Copilot
 
-## Google Engineering Practices — Code review
+- https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions
+- https://docs.github.com/en/copilot/concepts/prompting/response-customization
+- https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-custom-instructions
+- https://docs.github.com/en/copilot/how-tos/copilot-on-github/use-copilot-agents/copilot-code-review
 
-https://google.github.io/eng-practices/review/
+Establishes: repository-wide/path-specific/agent instructions, `AGENTS.md` support in relevant Copilot surfaces, instruction precedence, CLI file references, Copilot review behavior and REST reviewer identity.
 
-https://google.github.io/eng-practices/review/reviewer/looking-for.html
+### Anthropic — Claude Code
 
-https://google.github.io/eng-practices/review/reviewer/standard.html
+- https://code.claude.com/docs/en/memory
+- https://code.claude.com/docs/en/debug-your-config
 
-Key ideas used here:
+Establishes: project `CLAUDE.md`, `@AGENTS.md` import pattern, concise instructions, path-scoped rules, distinction between behavioral guidance and permissions/hooks, local auto-memory vs checked-in shared project context.
 
-- review design, functionality, complexity, tests, and user impact;
-- optimize for improving code health over time rather than demanding perfection;
-- review should be independent reasoning, not merely a style pass.
+### Google — Gemini CLI
 
-## GitHub Docs — Status checks
+- https://google-gemini.github.io/gemini-cli/docs/cli/gemini-md.html
 
-https://docs.github.com/en/pull-requests/reference/status-checks
+Establishes: hierarchical `GEMINI.md` context, `@file` imports, configurable context filenames, context inspection/refresh.
 
-https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks
+### Cursor
 
-Key ideas used here:
+- https://docs.cursor.com/context/rules
 
-- checks attach validation to commits;
-- required checks gate protected-branch merges;
-- required checks need to succeed against the latest relevant commit SHA;
-- old green checks are not evidence for a newer PR head.
+Establishes: project rules and `AGENTS.md` as a simple project instruction mechanism; scoped rules reduce irrelevant context.
 
-## GitHub Docs — Protected branches
+### Windsurf
 
-https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches
+- https://docs.windsurf.com/windsurf/cascade/memories
 
-Key ideas used here:
+Establishes: `AGENTS.md` discovery, workspace rules, distinction between local auto-memory and repository-shared rules, concise/scoped instruction guidance.
 
-- protected branches can require successful validation before merge;
-- repository policy should make important delivery constraints enforceable rather than purely advisory.
+### Cline
 
-## Attribution note
+- https://docs.cline.bot/customization/cline-rules
+- https://docs.cline.bot/getting-started/config
 
-The wording and operating model in this repository are original synthesis. The linked sources should be consulted directly for their full guidance and licenses.
+Establishes: native `AGENTS.md` compatibility, project rules/conditional scope, explicit command permissions, and the need to review executable hooks/plugins.
+
+### Aider
+
+- https://aider.chat/docs/usage/conventions.html
+- https://aider.chat/docs/repomap.html
+- https://aider.chat/docs/git.html
+
+Establishes: read-only convention files, concise repository maps, and Git-based review/undo mechanics. This repo's `.aider.conf.yml` loads `AGENTS.md` as the shared conventions file.
+
+## Emerging empirical evidence
+
+These papers are primary research, useful for testing assumptions but **not** universal policy authority.
+
+### Configuration smells in coding-agent instruction files (2026)
+
+- https://arxiv.org/abs/2606.15828
+
+Reports recurring smells including context bloat, duplicated/conflicting instruction families and leakage of rules better enforced elsewhere. This supports the playbook's short-router, one-owner and executable-guardrail design, while the study sample and heuristics remain research constraints.
+
+### Impact of AGENTS.md on coding-agent efficiency (2026)
+
+- https://arxiv.org/abs/2601.20404
+
+Reports lower median runtime/output-token use with AGENTS.md in a limited multi-repository experiment while task completion stayed comparable. Treat the result as promising evidence for repository-level instructions, not a guarantee for every agent/project.
+
+## Change size and review
+
+### Google Engineering Practices
+
+- https://google.github.io/eng-practices/review/developer/small-cls.html
+- https://google.github.io/eng-practices/review/reviewer/looking-for.html
+- https://google.github.io/eng-practices/review/reviewer/standard.html
+
+Establishes: small self-contained changes, related tests with behavior, review of design/functionality/complexity/tests/user impact, and code-health improvement rather than perfectionism.
+
+## GitHub delivery/security
+
+- https://docs.github.com/en/pull-requests/reference/status-checks
+- https://docs.github.com/en/pull-requests/how-tos/merge-and-close-pull-requests/troubleshooting-required-status-checks
+- https://docs.github.com/en/actions/reference/security/secure-use
+- https://docs.github.com/en/actions/concepts/security/github_token
+- https://docs.github.com/en/actions/how-tos/secure-your-work
+- https://github.com/actions/checkout
+- https://github.com/actions/setup-node
+
+Establishes: commit/merge-candidate scoped status checks, latest-head relevance, least-privilege workflow token permissions, immutable full-SHA action pinning, secure workflow/deployment guidance, and current Node 24-based official action generations. This reference repo uses checkout/setup-node v6 commit pins and Node 24.
+
+## Secure development and supply chain
+
+### NIST SSDF
+
+- https://csrc.nist.gov/pubs/sp/800/218/final
+- https://csrc.nist.gov/Projects/ssdf/publications
+
+Establishes: secure development practices integrated into the SDLC, protection of software and development environments, secure production, vulnerability response and root-cause prevention. Check the publications page for the current revision status.
+
+### SLSA
+
+- https://slsa.dev/spec/v1.2/build-track-basics
+- https://slsa.dev/spec/v1.2/provenance
+
+Establishes: incremental build/supply-chain assurance and verifiable provenance for projects that produce artifacts. This playbook treats provenance as optional until a project actually has a release artifact boundary.
+
+## Attribution and applicability
+
+The operating model and wording in this repository are original synthesis. These references validate interoperability and engineering principles; they do not imply endorsement by the referenced organizations.

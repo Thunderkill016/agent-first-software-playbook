@@ -1,0 +1,15 @@
+{
+  "name": "agent-first-software-playbook",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "agent:doctor": "node scripts/agent-doctor.mjs",
+    "check:knowledge": "node scripts/check-knowledge.mjs",
+    "check:public-safety": "node scripts/check-public-safety.mjs",
+    "verify": "npm run check:knowledge && npm run check:public-safety"
+  }
+}

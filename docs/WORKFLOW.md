@@ -1,185 +1,131 @@
-# End-to-End Agent Delivery Workflow
+# End-to-end delivery workflow
 
-This file defines the execution loop. It complements `AGENTS.md`; it does not replace product or architecture authority.
+This workflow turns an intent into an accepted repository state without depending on hidden chat context.
 
-## 1. Intake
+Detailed state/permission rules: `docs/engineering/AGENT_OPERATING_MODEL.md`.
 
-Convert a request into a bounded task contract:
+## 1. Capture outcome
 
-- Goal
-- Exact scope
-- Acceptance criteria
-- Evidence required
-- Stop conditions
-- Delivery expectations
+Define:
 
-If any of these are materially ambiguous, resolve them from current repository authority before editing.
+- user/project outcome;
+- exact in/out scope;
+- acceptance criteria;
+- prohibited behavior;
+- required evidence;
+- stop conditions.
 
-## 2. Reconnaissance
+Use `templates/AGENT_TASK.md` or `templates/WORK_PACKET.md`.
 
-Before changing code:
+## 2. Reconnaissance — `discovery`
 
-1. inspect the affected implementation;
-2. inspect nearby tests;
-3. read current project state/work;
-4. reproduce or confirm the current behavior when practical;
-5. identify the actual owner of the behavior;
-6. check git branch/base/worktree state.
+Read current repository truth first:
 
-Do not start by reading all historical issues.
+- affected implementation/tests/config/schema;
+- current state/work;
+- architecture/product authority;
+- active task;
+- runtime/logs where the report is behavioral.
 
-## 3. Research
+Output: relevant owners/files, reproduced/current behavior, reusable paths, uncertainty.
 
-Research only unresolved external facts.
+## 3. Research — `discovery → specified`
 
-Use official/primary sources for APIs, frameworks, security controls, standards, and provider behavior.
+Research only unresolved external facts. Use `docs/engineering/RESEARCH_PROTOCOL.md` and `templates/RESEARCH_NOTE.md` for load-bearing decisions.
 
-Record:
+## 4. Specification — `specified`
 
-- what the source establishes;
-- what does not apply;
-- how it matches or conflicts with actual repo/runtime evidence.
+Write observable acceptance and non-goals before prescribing implementation. Resolve or explicitly exclude unknown product decisions.
 
-## 4. Classify risk
+## 5. Plan — `planned`
 
-Use `RISK_MODEL.md`.
+Identify:
 
-The risk class determines:
+- files/owners/interfaces;
+- existing code to reuse;
+- risk class;
+- permission scope;
+- task checkpoints;
+- evidence per claim;
+- compatibility/rollout/rollback;
+- stop/approval points.
 
-- planning depth;
-- verification depth;
-- independent review requirement;
-- production/provider proof;
-- permission boundary.
+## 6. Isolate work — `implementing`
 
-## 5. Plan
-
-Prefer the smallest coherent vertical slice.
-
-A plan should state:
-
-- files/components likely affected;
-- behavior/invariants preserved;
-- implementation steps;
-- tests/evidence;
-- rollback or stop condition.
-
-Do not use planning as a substitute for implementation.
-
-## 6. Branch
-
-Use a focused branch for substantive changes.
-
-Keep unrelated work out of the branch.
-
-If the base moved materially, reconcile before relying on old evidence.
+Use one focused branch/worktree/sandbox. Keep unrelated user changes safe. Parallel work requires disjoint ownership or explicit interfaces.
 
 ## 7. Implement
 
-Rules:
+- one checkpoint at a time;
+- smallest coherent change;
+- fix authoritative owners rather than stacking overrides;
+- change specification first if requirements change;
+- record unrelated defects separately.
 
-- search for existing owners/helpers before adding abstractions;
-- do not broaden scope;
-- fix ownership rather than stacking overrides;
-- keep behavior and tests together;
-- update requirements/specification before intentionally changing the contract.
+## 8. Verify locally
 
-## 8. Local verification
+Use `docs/engineering/VERIFICATION_MATRIX.md`.
 
-Run risk-selected checks.
+Report exact commands, SHA/mode/environment where relevant, passes/failures/not-applicable steps, retry history and remaining unknowns.
 
-Do not claim an interrupted command as passed.
+## 9. Evaluate — `evaluating`
 
-If a failing check passes on retry, investigate whether the first failure indicates flakiness, shared-state contamination, timing sensitivity, or environment/resource contention.
+Use `templates/EVALUATION.md`. The evaluator reads the task/spec and actual diff, challenges counterexamples, and identifies unverified claims.
 
-## 9. Runtime/user proof
+Self-review is allowed but must be labeled as self-review. Independent means a separate reviewer/model/person.
 
-For user-facing work, drive the running product.
+## 10. PR — `ready_for_review`
 
-For boundary-specific work, use the matching evidence:
+The PR body records:
 
-- UI → browser/e2e/responsive/accessibility;
-- DB → migration/integration/isolation;
-- security/provider → targeted security checks + provider read-back;
-- production behavior → safe smoke when required and authorized.
+- outcome/scope;
+- risk/permissions;
+- exact evidence;
+- initial failures and retries;
+- evaluation provenance/findings;
+- exact head;
+- lifecycle/current-state impact;
+- deployment/provider verification plan if needed.
 
-## 10. Independent evaluation
+## 11. Exact-head gate
 
-For material work, use a fresh reviewer/context.
+Before merge, re-read current head/base and required checks. If the head changed after review/checks, re-evaluate the changed delta and evidence.
 
-Challenge:
+## 12. Merge
 
-- scope;
-- correctness;
-- hidden regressions;
-- complexity;
-- test quality;
-- mode correctness;
-- evidence quality;
-- ownership duplication.
+Merge only when:
 
-Fix every material finding before calling the task clean.
+- material findings are resolved/accepted by correct authority;
+- required checks are clean for the exact head/merge candidate;
+- no ungranted permission boundary remains;
+- rollback/compatibility is acceptable.
 
-## 11. Pull request
+Use expected-head merge protection where supported.
 
-The PR should state:
+## 13. Deploy / provider action
 
-- what changed;
-- why;
-- scope/non-scope;
-- risk class;
-- exact head when relevant;
-- checks/evidence;
-- reviewer findings/fixes;
-- limitations.
+Only when applicable and authorized. Identify the exact deployed commit/provider change.
 
-A PR is part of durable project memory.
+## 14. Runtime verification — `deployed`
 
-## 12. Exact-head verification
+Verify only the affected boundary with the narrowest safe synthetic/reversible method. Do not infer production truth from local/test evidence.
 
-Immediately before merge verify:
+## 15. Accept and reconcile — `accepted`
 
-- current PR head;
-- required checks on that exact head;
-- base relevance/up-to-date requirement;
-- unresolved review threads;
-- no unexpected skipped checks;
-- no new material blocker.
+- update current state if capability/architecture/security/operations truth changed;
+- update current work status;
+- retire/archive completed active execution artifacts;
+- preserve only useful provenance;
+- update failure register and executable guardrail when a reusable failure was found.
 
-Use an expected-head SHA merge guard when available.
+## 16. Garbage collect
 
-## 13. Merge
+Periodically remove:
 
-Merge only if:
+- stale instructions;
+- duplicated owners;
+- obsolete workarounds;
+- completed plans left active;
+- dead rules/tests that no longer protect a real contract.
 
-- the project permits it;
-- all required evidence is clean;
-- no owner-decision boundary remains;
-- no irreversible/provider/data/security permission is being smuggled through the merge.
-
-## 14. Post-merge proof
-
-Where the changed behavior crosses into production/provider/runtime truth, verify it after merge/deployment.
-
-Do not claim production success from pre-merge local evidence.
-
-## 15. Reconcile lifecycle
-
-After acceptance:
-
-- remove completed work from `NOW`;
-- update `CURRENT_STATE.md` when reality changed;
-- update `CURRENT_WORK.md` when execution state changed;
-- archive/close completed plans and stale tasks;
-- record durable failure lessons only when future agents would otherwise rediscover them.
-
-## 16. Improve the harness
-
-After meaningful failures ask:
-
-1. Why was the wrong action plausible?
-2. What signal was missing?
-3. Where should the rule live?
-4. Can it be executable?
-
-Prefer one guardrail over ten new warning paragraphs.
+Agent-first repositories need continuous entropy control, not permanent process accumulation.
