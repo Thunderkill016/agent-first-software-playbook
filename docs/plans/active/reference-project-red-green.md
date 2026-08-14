@@ -6,7 +6,7 @@
 
 ## Execution state
 
-`evaluating`
+`ready_for_review`
 
 ## Risk
 
@@ -36,8 +36,10 @@ task contract → intentional behavioral red → bounded fix → evaluation → 
 - [x] Failure is classified from CI logs and preserved here.
 - [x] Minimal implementation fix changes only authoritative filtering logic.
 - [x] Fixed implementation-head CI passes.
-- [ ] Evaluation provenance and unverified claims are recorded and checked.
-- [ ] Final exact-head CI passes after evaluation metadata.
+- [x] Evaluation provenance and unverified claims are recorded.
+- [x] Evaluation-head exact CI passes.
+- [ ] Independent review returns, or its unavailability is explicitly recorded after a real request.
+- [ ] Final exact-head CI passes after the review/readiness state is frozen.
 - [ ] Exact head/base/reviews/threads are rechecked before merge.
 - [ ] Merge uses expected-head protection when safe.
 - [ ] This active artifact is retired and current state/work are reconciled after merge.
@@ -54,8 +56,6 @@ task contract → intentional behavioral red → bounded fix → evaluation → 
 - public-safety contract: PASS (`54 tracked files inspected`)
 - executable reference test: FAIL (`2 passed / 2 failed`)
 
-Failing assertions proved the same root cause: blocked tasks were incorrectly eligible.
-
 Classification: **deterministic implementation defect** in the eligibility filter. No retry was used.
 
 ## Fix
@@ -68,17 +68,29 @@ status !== done  →  status === ready
 
 Tests, priority ordering, CI workflow, and dependency surface were not changed to obtain green.
 
-## Observed green evidence
+## Green evidence
 
-- exact fixed head: `73845c27cede0807c0b6c8fed2c9eb69a124eb71`
-- GitHub merge candidate: `9ba36d01d067539d2939027b71abe7c18fdb6c6a`
-- workflow: `Playbook policy` run `31826966421`
-- result: `success`
-- Node: `24.19.0`
-- knowledge contract: PASS (`40 markdown files checked`)
-- public-safety contract: PASS (`54 tracked files inspected`)
-- executable reference test: PASS (`4 passed / 0 failed`)
-- agent doctor: `ok: true`, runtime `ok: true`, no missing required files
+### Fixed implementation head
+
+- head: `73845c27cede0807c0b6c8fed2c9eb69a124eb71`
+- workflow run: `31826966421`
+- result: PASS
+- reference tests: `4 passed / 0 failed`
+- knowledge/public-safety: PASS
+- doctor: `ok: true`
+
+### Evaluation head
+
+- head: `ac59d87986cfd53a29b447365d3bf6cd4640e42f`
+- workflow run: `31827068944`
+- result: PASS
+- repository verification and doctor both completed successfully
+
+## Evaluation
+
+See `docs/plans/active/reference-project-red-green-evaluation.md`.
+
+Current self-review verdict: `CLEAN WITH INDEPENDENT REVIEW PENDING`.
 
 ## Research decision
 
@@ -90,4 +102,4 @@ Revert the focused PR. No external state exists.
 
 ## Next allowed action
 
-Evaluate the actual diff and evidence, record provenance/unverified claims, then require a fresh exact-head policy pass after evaluation metadata before moving to `ready_for_review`.
+Let this state-only commit pass policy CI, mark PR #7 ready, request independent review, resolve any material findings, then freeze one final head and merge only after exact-head/base/review/thread rechecks.
