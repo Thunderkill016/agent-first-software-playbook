@@ -4,11 +4,14 @@
 
 Canonical shared owner: root `AGENTS.md`.
 
+`AGENTS.md` is also maintained as a simple open format for coding-agent guidance. The portable design goal is therefore a plain, predictable repository contract rather than a proprietary orchestration format.
+
 ## Compatibility matrix
 
 | Agent/tool | Official project instruction surface | Repo strategy |
 |---|---|---|
 | OpenAI Codex | `AGENTS.md` | native; no adapter |
+| Google Jules | root `AGENTS.md` | native; no adapter |
 | GitHub Copilot | `AGENTS.md`, `.github/copilot-instructions.md`, path instructions depending on feature | thin Copilot file points to `AGENTS.md`; avoid policy duplication |
 | Claude Code | `CLAUDE.md`; supports `@AGENTS.md` import | `CLAUDE.md` imports canonical file |
 | Gemini CLI | `GEMINI.md`; supports `@file` imports/configurable context filename | `GEMINI.md` imports canonical file |
@@ -36,7 +39,7 @@ Do not make tool adapters a second policy layer.
 
 ## Why this works
 
-Several modern coding-agent tools either support `AGENTS.md` directly or support importing a shared file. For tools that do not, most can load a read-only conventions/instruction file.
+Multiple modern coding-agent tools support `AGENTS.md` directly, and others can import or load a shared repository file. The AGENTS.md open-format project exists specifically to provide a predictable, vendor-neutral place for agent guidance.
 
 The portable unit is therefore **plain Markdown project policy plus repository artifacts**, not one vendor's orchestration format.
 
@@ -51,6 +54,8 @@ Rules for scoped instructions:
 3. remain version-controlled if shared by the team;
 4. keep personal preferences in user/local config;
 5. test discovery if the rule is load-bearing.
+
+This also reduces known configuration-smell families such as context bloat and conflicting/duplicated instructions. Empirical studies can inform this design, but they do not replace repository-specific evidence.
 
 ## Hard guarantees vs guidance
 
@@ -72,6 +77,21 @@ Use instructions for judgment/navigation, not as the only barrier to destructive
 Do not commit a tool's personal/automatic memory simply because it is useful locally.
 
 Promote a discovered lesson into the repository only when it becomes reviewed project truth, and put it in the correct owner layer. This avoids one user's corrections/preferences silently becoming universal policy.
+
+## Environment interoperability
+
+Instruction discovery alone is not enough. A remote or sandboxed agent also needs a reproducible development environment.
+
+Useful cross-agent properties are:
+
+- explicit runtime/tool versions;
+- deterministic setup/run/verify commands;
+- isolated task environments;
+- synthetic fixtures;
+- observable logs/browser/runtime state;
+- no hidden dependence on a developer workstation.
+
+Google Jules, for example, runs tasks in short-lived VMs and can use repository environment setup. The portable project pattern is to make setup itself repository-readable rather than relying on tool-specific hidden state.
 
 ## Unknown/new tools
 
