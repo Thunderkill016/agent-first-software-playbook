@@ -6,7 +6,7 @@
 
 ## Execution state
 
-`implementing`
+`evaluating`
 
 ## Risk
 
@@ -34,22 +34,17 @@ task contract → intentional behavioral red → bounded fix → evaluation → 
 - [x] Root `npm run verify` runs the executable sample test.
 - [x] Draft PR exact head fails for the intended blocked-task assertion.
 - [x] Failure is classified from CI logs and preserved here.
-- [ ] Minimal implementation fix changes only authoritative filtering logic.
-- [ ] Fixed exact-head CI passes.
-- [ ] Evaluation provenance and unverified claims are recorded.
+- [x] Minimal implementation fix changes only authoritative filtering logic.
+- [x] Fixed implementation-head CI passes.
+- [ ] Evaluation provenance and unverified claims are recorded and checked.
+- [ ] Final exact-head CI passes after evaluation metadata.
 - [ ] Exact head/base/reviews/threads are rechecked before merge.
 - [ ] Merge uses expected-head protection when safe.
 - [ ] This active artifact is retired and current state/work are reconciled after merge.
 
-## Red-state design
-
-The first implementation intentionally filters only `done` tasks. Therefore a `blocked/high` task can be selected ahead of a `ready/medium` task.
-
-The test contract requires only `ready` tasks to be eligible. The failing test must not be weakened, skipped, or rewritten to match the bug.
-
 ## Observed red evidence
 
-- PR: #7 (draft)
+- PR: #7
 - exact red head: `54ec722faa3bda95cf7ce0d93f817505eea96da6`
 - GitHub merge candidate: `9f630ccdf948e51da60cbdf8019f5534f9ae6b9d`
 - workflow: `Playbook policy` run `31826895869`
@@ -59,22 +54,35 @@ The test contract requires only `ready` tasks to be eligible. The failing test m
 - public-safety contract: PASS (`54 tracked files inspected`)
 - executable reference test: FAIL (`2 passed / 2 failed`)
 
-Failing assertions:
+Failing assertions proved the same root cause: blocked tasks were incorrectly eligible.
 
-1. `returns null when no task is ready` — actual result was `{ status: 'blocked', priority: 'high', title: 'Blocked' }` instead of `null`.
-2. `never selects blocked or done work` — actual result was the `blocked/high` task instead of the `ready/medium` task.
+Classification: **deterministic implementation defect** in the eligibility filter. No retry was used.
 
-Classification: **deterministic implementation defect** in the eligibility filter. This is the intended red state; no retry was used and no infrastructure explanation is needed.
+## Fix
+
+Changed only the authoritative predicate in `examples/reference-project/src/next-task.mjs`:
+
+```text
+status !== done  →  status === ready
+```
+
+Tests, priority ordering, CI workflow, and dependency surface were not changed to obtain green.
+
+## Observed green evidence
+
+- exact fixed head: `73845c27cede0807c0b6c8fed2c9eb69a124eb71`
+- GitHub merge candidate: `9ba36d01d067539d2939027b71abe7c18fdb6c6a`
+- workflow: `Playbook policy` run `31826966421`
+- result: `success`
+- Node: `24.19.0`
+- knowledge contract: PASS (`40 markdown files checked`)
+- public-safety contract: PASS (`54 tracked files inspected`)
+- executable reference test: PASS (`4 passed / 0 failed`)
+- agent doctor: `ok: true`, runtime `ok: true`, no missing required files
 
 ## Research decision
 
 Use Node 24 built-in `node:test` rather than a third-party test framework. The repository already requires Node 24, the test runner is stable, and this avoids adding a dependency solely for the teaching sample.
-
-## Fix contract
-
-Change only the authoritative eligibility predicate in `src/next-task.mjs` from “not done” to “status is exactly ready”.
-
-Do not change the tests, priority ordering, CI workflow, or dependency surface to obtain green.
 
 ## Rollback
 
@@ -82,4 +90,4 @@ Revert the focused PR. No external state exists.
 
 ## Next allowed action
 
-Apply the one-owner eligibility fix, then require a fresh exact-head policy run before evaluation.
+Evaluate the actual diff and evidence, record provenance/unverified claims, then require a fresh exact-head policy pass after evaluation metadata before moving to `ready_for_review`.
