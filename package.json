@@ -10,6 +10,7 @@
     "agent:doctor": "node scripts/agent-doctor.mjs",
     "check:knowledge": "node scripts/check-knowledge.mjs",
     "check:public-safety": "node scripts/check-public-safety.mjs",
-    "verify": "npm run check:knowledge && npm run check:public-safety"
+    "test:reference": "node --test examples/reference-project/test/next-task.test.mjs",
+    "verify": "npm run check:knowledge && npm run check:public-safety && npm run test:reference"
   }
 }
