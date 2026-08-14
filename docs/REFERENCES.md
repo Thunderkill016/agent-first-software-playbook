@@ -6,12 +6,26 @@ External sources are evidence for this playbook, not repository authority. Tool 
 
 ## Agent repository instructions and context
 
+### AGENTS.md — open format
+
+- https://agents.md/
+- https://github.com/agentsmd/agents.md
+
+Establishes: a simple vendor-neutral `AGENTS.md` format, root and nested project guidance, and broad ecosystem adoption. The format is a discovery/context convention, not an enforcement or security boundary.
+
 ### OpenAI — Codex / Harness Engineering
 
 - https://openai.com/index/introducing-codex/
 - https://openai.com/index/harness-engineering/
 
 Establishes: repository `AGENTS.md`, configured development environments, reliable tests, repository knowledge as system of record, short instruction map + progressive disclosure, mechanical knowledge checks, application/runtime legibility, feedback-loop/guardrail improvement.
+
+### Google — Jules
+
+- https://jules.google/docs/
+- https://jules.google/docs/environment/
+
+Establishes: automatic root `AGENTS.md` discovery, isolated short-lived VM execution, repository/environment setup, test-oriented task execution and repository-scoped work.
 
 ### GitHub Copilot
 
@@ -62,6 +76,22 @@ Establishes: native `AGENTS.md` compatibility, project rules/conditional scope, 
 
 Establishes: read-only convention files, concise repository maps, and Git-based review/undo mechanics. This repo's `.aider.conf.yml` loads `AGENTS.md` as the shared conventions file.
 
+## Emerging empirical evidence
+
+These papers are primary research, useful for testing assumptions but **not** universal policy authority.
+
+### Configuration smells in coding-agent instruction files (2026)
+
+- https://arxiv.org/abs/2606.15828
+
+Reports recurring smells including context bloat, duplicated/conflicting instruction families and leakage of rules better enforced elsewhere. This supports the playbook's short-router, one-owner and executable-guardrail design, while the study sample and heuristics remain research constraints.
+
+### Impact of AGENTS.md on coding-agent efficiency (2026)
+
+- https://arxiv.org/abs/2601.20404
+
+Reports lower median runtime/output-token use with AGENTS.md in a limited multi-repository experiment while task completion stayed comparable. Treat the result as promising evidence for repository-level instructions, not a guarantee for every agent/project.
+
 ## Change size and review
 
 ### Google Engineering Practices
@@ -79,8 +109,10 @@ Establishes: small self-contained changes, related tests with behavior, review o
 - https://docs.github.com/en/actions/reference/security/secure-use
 - https://docs.github.com/en/actions/concepts/security/github_token
 - https://docs.github.com/en/actions/how-tos/secure-your-work
+- https://github.com/actions/checkout
+- https://github.com/actions/setup-node
 
-Establishes: commit-scoped status checks, latest-head relevance, least-privilege workflow token permissions, immutable full-SHA action pinning, secure workflow/deployment guidance, and artifact attestation options.
+Establishes: commit/merge-candidate scoped status checks, latest-head relevance, least-privilege workflow token permissions, immutable full-SHA action pinning, secure workflow/deployment guidance, and current Node 24-based official action generations. This reference repo uses checkout/setup-node v6 commit pins and Node 24.
 
 ## Secure development and supply chain
 
@@ -100,4 +132,4 @@ Establishes: incremental build/supply-chain assurance and verifiable provenance 
 
 ## Attribution and applicability
 
-The operating model and wording in this repository are original synthesis. These references are used to validate interoperability and engineering principles; they do not imply endorsement by the referenced organizations.
+The operating model and wording in this repository are original synthesis. These references validate interoperability and engineering principles; they do not imply endorsement by the referenced organizations.
