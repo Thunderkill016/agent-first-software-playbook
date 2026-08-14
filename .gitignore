@@ -1,0 +1,15 @@
+# Secrets / local environment
+.env
+.env.*
+!.env.example
+
+# Dependencies / generated
+node_modules/
+.DS_Store
+
+# Personal agent/local state — never shared project authority
+CLAUDE.local.md
+.claude/settings.local.json
+.aider.chat.history.md
+.aider.input.history
+.aider.tags.cache.*

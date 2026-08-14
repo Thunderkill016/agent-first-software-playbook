@@ -1,161 +1,137 @@
-# Project Bootstrap Checklist
+# Bootstrap checklist: turn a normal repo into an agent-ready repo
 
-Use this to turn a normal repository into an agent-legible repository without copying unnecessary process.
+Do not copy this entire repository blindly. Apply the smallest set that solves the target project's real onboarding, correctness and safety problems.
 
-## Phase 0 — Product truth
+## Phase 0 — observe before adding process
 
-- [ ] Write one paragraph: who is the product for and what problem does it solve?
-- [ ] Define 2–4 core user jobs.
-- [ ] Define explicit non-goals.
-- [ ] List the small set of domain/product invariants that must never be casually reinterpreted.
-- [ ] Identify any irreversible owner decisions already made.
+- [ ] Read current code/config/tests and existing contributor docs.
+- [ ] Identify current setup/run/test/release commands.
+- [ ] Identify product/domain invariants.
+- [ ] Identify where current truth/work actually live.
+- [ ] List recurring agent/new-developer failures.
+- [ ] Identify provider/production/security boundaries.
 
-Output: `docs/PRODUCT.md`.
+## Phase 1 — canonical entrypoint
 
-## Phase 1 — Current implementation truth
+- [ ] Add a root `AGENTS.md` under roughly 100–180 lines.
+- [ ] Make it a router: authority, first-run algorithm, commands, risk, permissions, verification, completion.
+- [ ] Remove generic advice agents already know.
+- [ ] Link to deeper owners instead of copying them.
 
-- [ ] Map major runtime entrypoints.
-- [ ] Map data stores and external providers.
-- [ ] Map authentication/authorization boundaries.
-- [ ] Map deployment/runtime modes.
-- [ ] Identify existing tests and CI.
-- [ ] Record major current capabilities and named limitations.
+## Phase 2 — current truth
 
-Output: `ARCHITECTURE.md` + `docs/CURRENT_STATE.md`.
+Create/adapt:
 
-## Phase 2 — Agent entrypoint
+- [ ] `README.md` — project overview;
+- [ ] `docs/PRODUCT.md` — user/job/product laws;
+- [ ] `ARCHITECTURE.md` — ownership/boundaries;
+- [ ] `docs/CURRENT_STATE.md` — present truth;
+- [ ] `docs/CURRENT_WORK.md` — NOW/NEXT/BLOCKED/DECISION/HOLD/DONE.
 
-- [ ] Create a short root `AGENTS.md`.
-- [ ] Define authority order.
-- [ ] Define first-run read order.
-- [ ] Route deeper documents rather than copying them.
-- [ ] Define permission boundaries.
-- [ ] Define evidence/verification rules.
-- [ ] Record only truly load-bearing project-specific traps.
+Do not use open issues as an implicit current-state database.
 
-Start from `templates/AGENTS.example.md`.
+## Phase 3 — context routing
 
-Test it by giving a fresh agent a simple read-only question about the repo. If it cannot locate the correct source of truth, the routing is not good enough.
+- [ ] Add a context router if the repo has enough docs to justify it.
+- [ ] Separate hot/warm/cold context.
+- [ ] Route by task boundary.
+- [ ] Define one owner per question.
+- [ ] Stop loading full PR/history archives by default.
 
-## Phase 3 — Current work
+## Phase 4 — agent interoperability
 
-- [ ] Create exactly one execution board.
-- [ ] Separate `NOW` from backlog/history.
-- [ ] Add `NEXT`, `BLOCKED`, `OWNER DECISION`, `TRIAGE`, `HOLD`, and compact `RECENTLY DONE` only if useful.
-- [ ] Define what qualifies an item to move into `NOW`.
-- [ ] Define how completed items leave `NOW`.
+- [ ] Check current official docs for the agents actually used.
+- [ ] Use `AGENTS.md` natively where supported.
+- [ ] Add thin import/pointer adapters only where discovery requires it.
+- [ ] Keep personal/local memory out of shared repo policy.
+- [ ] Add a mechanical adapter check if the mapping is load-bearing.
 
-Output: `docs/CURRENT_WORK.md`.
+## Phase 5 — environment contract
 
-## Phase 4 — Risk and permissions
+- [ ] deterministic setup;
+- [ ] documented runtime/tool versions/lockfiles;
+- [ ] one-command verify;
+- [ ] isolated worktree/branch execution;
+- [ ] safe synthetic fixtures;
+- [ ] discoverable logs/browser/runtime evidence;
+- [ ] cleanup/reset;
+- [ ] no embedded secrets.
 
-- [ ] Define Class 0–3 (or equivalent) change categories.
-- [ ] Define which categories require browser/database/security/provider evidence.
-- [ ] Define which categories require a full plan/work packet.
-- [ ] Separate merge permission from production/provider/database/destructive permission.
-- [ ] Define fail-closed stop conditions.
+## Phase 6 — risk + permissions
 
-Output: `docs/RISK_MODEL.md`.
+- [ ] define change classes proportional to consequence;
+- [ ] define when a full work packet is required;
+- [ ] separate repo write, merge, provider write and production-data write permissions;
+- [ ] define stop/escalation conditions;
+- [ ] define rollback expectations.
 
-## Phase 5 — Task contract
+## Phase 7 — task and handoff contracts
 
-- [ ] Standardize Goal.
-- [ ] Standardize Exact scope / non-scope.
-- [ ] Standardize Acceptance criteria.
-- [ ] Standardize Evidence.
-- [ ] Standardize Permission scope.
-- [ ] Standardize Stop conditions.
-- [ ] Standardize Delivery.
+- [ ] bounded task template;
+- [ ] high-consequence work packet;
+- [ ] handoff template with state/artifacts/unknowns/next action;
+- [ ] evaluation template that records independence provenance;
+- [ ] research note for load-bearing external decisions.
 
-Output: `templates/AGENT_TASK.md`.
+## Phase 8 — verification
 
-For complex/high-risk work also adopt `templates/WORK_PACKET.md`.
+Build a claim→evidence matrix for the target stack.
 
-## Phase 6 — Verification harness
+- [ ] static/build;
+- [ ] domain/unit/integration;
+- [ ] database/ownership;
+- [ ] browser/e2e;
+- [ ] responsive/a11y;
+- [ ] provider read-back;
+- [ ] production smoke;
+- [ ] exact-head merge checks.
 
-Start from the failures you cannot afford.
+Do not run irrelevant heavy gates only because they exist.
 
-- [ ] lint/static checks;
-- [ ] type checks;
-- [ ] unit/domain tests;
-- [ ] build;
-- [ ] migration checks;
-- [ ] DB/isolation tests;
-- [ ] browser/e2e tests;
-- [ ] accessibility/responsive checks;
-- [ ] security/secret scanning;
-- [ ] architecture/ownership checks where repeated failures justify them.
+## Phase 9 — machine-readable guardrails
 
-Do not create every check on day one. Prioritize high-consequence and recurring failure modes.
+For deterministic repository rules, add the cheapest executable layer:
 
-## Phase 7 — Branch and PR policy
+- [ ] policy/data manifest if useful;
+- [ ] knowledge/link/structure checker;
+- [ ] architecture/lint contract;
+- [ ] CI classifier where risk-selected gates are complex;
+- [ ] secret/public-safety guard;
+- [ ] stable CI check identities.
 
-- [ ] Substantive work uses focused branches.
-- [ ] PR descriptions explain what and why.
-- [ ] Related tests travel with behavior changes.
-- [ ] Required checks gate protected branches when available.
-- [ ] Review is separate from authoring for material work.
-- [ ] Exact current head is rechecked before merge.
-- [ ] Prefer expected-head merge guards when supported.
+The machine projection must mirror documented policy, not invent it.
 
-## Phase 8 — Runtime evidence
+## Phase 10 — CI/security
 
-For each product boundary ask what source code cannot prove.
+- [ ] least-privilege workflow permissions;
+- [ ] immutable action pins where practical;
+- [ ] dependency/secret/code scanning appropriate to stack/risk;
+- [ ] protected merge rules where justified;
+- [ ] untrusted PR isolation from secrets;
+- [ ] release provenance only if artifacts are actually published.
 
-- [ ] UI → run the app.
-- [ ] responsive UI → measure target viewports.
-- [ ] auth → exercise correct identity mode.
-- [ ] DB → test isolation and persistence.
-- [ ] provider config → read back provider state.
-- [ ] production behavior → safe post-deploy smoke when required.
+## Phase 11 — failure learning
 
-Never upgrade weak evidence into a stronger claim.
+- [ ] create a failure→guardrail register only when recurring patterns exist;
+- [ ] record observable signature, not vague warning;
+- [ ] implement regression proof;
+- [ ] prefer earliest structural guardrail;
+- [ ] periodically remove stale rules/workarounds.
 
-## Phase 9 — Independent evaluation
+## Phase 12 — prove onboarding
 
-- [ ] Use a fresh reviewer/context for material work.
-- [ ] Review design, functionality, complexity, tests, user impact, scope, ownership, and evidence.
-- [ ] Distinguish material findings from subjective alternatives.
-- [ ] Fix all material findings before clean completion.
+Test with a fresh agent/session/worktree:
 
-## Phase 10 — Memory and lifecycle
+1. Can it identify the product/current state/current task?
+2. Can it find the setup/run/verify commands?
+3. Can it classify risk and permission boundaries?
+4. Can it implement a small task without historical chat?
+5. Can it prove the result in the correct runtime mode?
+6. Can another agent/person continue from artifacts?
+7. Can CI catch a deliberate contract violation?
 
-- [ ] Update `CURRENT_STATE` only when present truth changes.
-- [ ] Update `CURRENT_WORK` when execution state changes.
-- [ ] Archive completed task packets.
-- [ ] Close/supersede stale issues after evidence-based reconciliation.
-- [ ] Keep historical evidence discoverable but cold.
-- [ ] Never use hidden chat context as the only handoff.
+Fix the repository if the agent struggles. Do not merely give that session more hidden context.
 
-## Phase 11 — Failure → guardrail loop
+## Exit criterion
 
-After a meaningful failure:
-
-- [ ] identify why the wrong action was plausible;
-- [ ] identify missing/misleading evidence;
-- [ ] decide the narrowest authoritative place for the lesson;
-- [ ] automate the rule if practical;
-- [ ] remove obsolete owners/process layers when replaced.
-
-The repository should become easier for the next agent after every failure.
-
-## Phase 12 — Fresh-agent test
-
-Give a fresh agent no prior project conversation and ask it to answer:
-
-1. What does this product do?
-2. What is true today?
-3. What work is currently authorized?
-4. What is blocked or held?
-5. What are the critical invariants?
-6. What tests apply to a UI/database/security/docs change?
-7. What may the agent merge or modify?
-8. Where should it record completion and durable lessons?
-
-If it cannot answer these from repository-local artifacts, the repository is not yet agent-legible.
-
-## Exit condition
-
-Do **not** measure success by document count.
-
-The project is ready when a fresh agent can take a small bounded task from intent through verified PR delivery without reconstructing basic project truth from the owner's memory.
+The project is agent-ready for its current maturity when a fresh capable agent can execute the normal delivery loop from repository artifacts, while high-consequence actions remain explicitly controlled and evidence stays truthful.

@@ -1,129 +1,107 @@
-# Work Packet
+# Work packet — <task>
 
-Use this for high-consequence, multi-day, multi-agent, cross-cutting, hard-to-rollback, provider/production, or research-heavy work.
-
-## Outcome
-
-One paragraph describing the finished user/system result.
-
-## Current truth
-
-What does the current repository/runtime actually do now?
-
-Include exact baseline/ref when important.
-
-## Scope
-
-### In scope
-
-- ...
-
-### Out of scope
-
-- ...
-
-## Product/domain invariants
-
-List only the laws that this work must preserve.
-
-## Acceptance criteria
-
-- **AC1:** ...
-- **AC2:** ...
-
-Each criterion should be observable or testable.
-
-## Risk classification
-
-Class: `0 / 1 / 2 / 3`
-
-Why:
-
-- consequence;
-- blast radius;
-- rollback difficulty;
-- uncertainty.
-
-## Permission scope
-
-Repository writes:
-
-Merge:
-
-Production/provider/database/security writes:
-
-Irreversible actions:
-
-## Research questions
-
-Only list unresolved facts that require external evidence.
-
-For each answer record:
-
-- source;
-- conclusion;
-- project applicability;
-- remaining uncertainty.
-
-## Implementation plan
-
-1. ...
-2. ...
-
-Prefer small coherent slices.
-
-## Verification plan
-
-### Always-on/project safety
-
-- ...
-
-### Boundary-specific
-
-- ...
-
-### Runtime/user proof
-
-- ...
-
-### Independent evaluation
-
-- ...
-
-## Rollback
-
-How is this reverted safely?
-
-What production/provider state must be restored?
-
-## Stop conditions
-
-- ...
+Use for Class 3, cross-cutting, multi-day/multi-agent, provider/production, research-heavy, or non-obvious rollback work.
 
 ## Execution state
 
-Current actor:
+`discovery | specified | planned | implementing | evaluating | ready_for_review | merged | deployed | accepted`
 
-Branch:
+## Goal / user outcome
 
-Base:
+## Current behavior / reconnaissance
 
-Head:
+- affected owners/files:
+- reproduced behavior:
+- existing reusable paths:
+- unresolved questions:
 
-Completed:
+## Scope
 
-Remaining:
+### In
 
-Blocked:
+### Out / forbidden
 
-## Evidence log
+## Acceptance criteria
 
-Record concise outcomes and pointers, not full logs.
+- [ ]
 
-## Completion / archive
+## Product/domain/security invariants
 
-After acceptance:
+- [ ] invariant — enforcement/evidence:
 
-- reconcile current state/work;
-- close/archive this packet;
-- convert repeated failure into a guardrail where appropriate.
+## Risk
+
+- Class:
+- blast radius:
+- rollback difficulty:
+- uncertainty:
+
+## Permission scope
+
+`read_only | branch_write | provider_read | provider_write_approved | production_data_write_approved`
+
+Exact allowed actions:
+
+Explicitly not allowed:
+
+## Research
+
+- decision question:
+- note/source links:
+- fact/inference/judgment separation:
+- unresolved uncertainty:
+
+## Architecture fit
+
+- owners/components:
+- interfaces/data model:
+- existing code to reuse:
+- compatibility/migration:
+
+## Plan / checkpoints
+
+1. [ ] outcome — files/owner — evidence — dependency
+
+## Verification matrix
+
+| Claim / acceptance | Evidence | Environment/mode | Status |
+|---|---|---|---|
+| | | | planned |
+
+## Evaluation
+
+- evaluator provenance:
+- independent? yes/no:
+- findings:
+- unverified claims:
+
+## Rollout / rollback
+
+## Stop conditions
+
+- [ ]
+
+## Handoffs
+
+Record each state/responsibility handoff using `templates/HANDOFF.md` fields or link to a handoff artifact.
+
+## PR / exact head
+
+- branch:
+- base:
+- PR:
+- reviewed head:
+- required checks:
+
+## Deployment/provider verification
+
+- exact deployment/change identity:
+- synthetic/reversible smoke:
+- permission used:
+
+## Lifecycle closeout
+
+- [ ] CURRENT_STATE reconciled if truth changed
+- [ ] CURRENT_WORK reconciled
+- [ ] failure/guardrail register updated if reusable
+- [ ] packet retired/archived after acceptance

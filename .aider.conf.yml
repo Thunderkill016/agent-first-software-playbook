@@ -1,0 +1,3 @@
+# Thin adapter: Aider loads the canonical shared agent contract as read-only context.
+read:
+  - AGENTS.md

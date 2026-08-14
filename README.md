@@ -1,179 +1,159 @@
 # Agent-First Software Playbook
 
-A practical, repository-centered operating system for building complete software projects with AI coding agents.
+A **vendor-neutral reference repository for coding agents**: how to structure a software project so a capable agent can enter with little prior chat context, understand current truth, execute one bounded task, prove the result, hand it off, and leave durable project state behind.
 
-The objective is simple:
-
-> A capable coding agent should be able to open the repository with little or no prior chat context, understand the product and current state, take one bounded task, implement it, prove it, hand it off, and leave the repository safer and clearer than it found it.
-
-This playbook is tool-agnostic. It can be adapted to Codex, Claude, Copilot, Gemini, or other coding agents.
+The repository is designed to be useful to humans **and** to agents from different ecosystems without making any one vendor the project authority.
 
 ## Start here
 
-**If you are a human:** read [`docs/A_TO_Z_AGENT_FIRST_PROJECT.md`](docs/A_TO_Z_AGENT_FIRST_PROJECT.md).
+### Coding agent
 
-**If you want to convert an existing repo now:** follow [`docs/PROJECT_BOOTSTRAP_CHECKLIST.md`](docs/PROJECT_BOOTSTRAP_CHECKLIST.md) and start from [`templates/AGENTS.example.md`](templates/AGENTS.example.md).
+1. Read [`AGENTS.md`](AGENTS.md).
+2. Run `npm run agent:doctor -- --json` when Node.js is available.
+3. Follow the route in [`docs/context/README.md`](docs/context/README.md).
+4. Work from current repository truth, not historical chat.
 
-**If you are a coding agent:** read [`AGENTS.md`](AGENTS.md) and follow its first-run algorithm.
+### Human adopting the pattern
 
-**If you want the real-project lessons behind the method:** read [`docs/MONEYFLOW_LESSONS.md`](docs/MONEYFLOW_LESSONS.md).
+1. Read [`docs/A_TO_Z_AGENT_FIRST_PROJECT.md`](docs/A_TO_Z_AGENT_FIRST_PROJECT.md).
+2. Follow [`docs/PROJECT_BOOTSTRAP_CHECKLIST.md`](docs/PROJECT_BOOTSTRAP_CHECKLIST.md).
+3. Copy and adapt [`templates/AGENTS.example.md`](templates/AGENTS.example.md).
+4. Keep only the layers justified by the target project's actual risk and complexity.
 
-## Core model
+## Universal design
 
-**Humans steer. Agents execute. The repository remembers. Automated checks provide evidence. Pull requests carry change. Runtime behavior is the final proof.**
+The canonical shared instruction owner is **`AGENTS.md`**. Tool-specific files are thin discovery adapters only.
+
+Supported patterns include:
+
+- native `AGENTS.md` discovery where the agent supports it;
+- `CLAUDE.md` importing the canonical file for Claude Code;
+- `GEMINI.md` importing the canonical file for Gemini CLI;
+- `.github/copilot-instructions.md` pointing to the canonical file for GitHub Copilot surfaces;
+- `.aider.conf.yml` loading the canonical file read-only for Aider;
+- manual `Read AGENTS.md first` fallback for any other repository-capable agent.
+
+See [`docs/engineering/AGENT_INTEROPERABILITY.md`](docs/engineering/AGENT_INTEROPERABILITY.md) for the compatibility matrix and official sources.
+
+## Core operating loop
 
 ```text
-human intent / user feedback
+intent / bug / feedback
         ↓
 CURRENT_WORK
         ↓
 bounded task contract
         ↓
-agent reads current repo truth
+repo-first reconnaissance
         ↓
 risk + permission classification
         ↓
-focused research if needed
+focused research if unresolved
         ↓
 plan proportional to uncertainty
         ↓
-focused branch
+isolated branch/worktree
         ↓
 implementation
         ↓
-risk-selected verification
+claim-matched evidence
         ↓
-running-product proof when relevant
-        ↓
-independent evaluation
+fresh evaluation
         ↓
 exact-head PR checks
         ↓
-merge when authorized and safe
+merge when authorized
         ↓
-production/provider verification when required
+runtime/provider proof if required
         ↓
 CURRENT_STATE / CURRENT_WORK reconciliation
         ↓
-failure → guardrail learning
+repeat failure → executable guardrail
 ```
 
-## What this repository teaches
+## What makes a repository agent-ready
 
-The A→Z guide covers:
+A strong agent repository provides:
 
-- authority order;
-- permission boundaries;
-- current-state memory;
-- definition of done;
-- evidence design;
-- first-run agent protocol;
-- executable guardrails;
-- durable handoffs;
-- product/domain invariants;
-- jobs-to-be-done context;
-- hot/warm/cold knowledge architecture;
-- task lifecycle;
-- project memory;
-- NOW/NEXT work boards;
-- single-owner architecture;
-- proportional planning;
-- independent review;
-- focused research;
-- scope control;
-- contract-focused tests;
-- real user/runtime proof;
-- risk-selected verification;
-- branches and pull requests;
-- exact-head CI;
-- human decision boundaries;
-- zero-repeat learning from failures.
+- a short deterministic entrypoint;
+- one authority per question;
+- hot/warm/cold context routing;
+- current truth separated from backlog/history;
+- explicit product/domain invariants;
+- bounded task contracts and stop conditions;
+- risk-proportional verification;
+- explicit permission scopes;
+- reproducible, isolated development environments;
+- running-product/log/metric visibility where applicable;
+- independent evaluation for material changes;
+- exact-head CI and merge evidence;
+- repository-backed handoffs and memory;
+- security/supply-chain guardrails;
+- a failure-to-guardrail feedback loop;
+- continuous cleanup of stale knowledge and duplicated patterns.
 
-## Minimal repository structure
+## Machine-readable contract
 
-A new project does not need a giant process stack.
+[`agent-contract.json`](agent-contract.json) projects load-bearing repository policy into a simple data file. The scripts do not invent extra policy; they check the contract already documented in the repo.
 
-Start with:
+Commands:
 
-```text
-README.md
-AGENTS.md
-ARCHITECTURE.md
-
-/docs
-  PRODUCT.md
-  CURRENT_STATE.md
-  CURRENT_WORK.md
-  RISK_MODEL.md
-  WORKFLOW.md
-
-/templates
-  AGENT_TASK.md
-  WORK_PACKET.md
+```bash
+npm run agent:doctor -- --json
+npm run check:knowledge
+npm run check:public-safety
+npm run verify
 ```
 
-Add more only when a real recurring failure or domain need justifies it.
-
-## Why this exists
-
-Agent-heavy projects tend to fail in predictable ways:
-
-- project truth exists only in chat;
-- `AGENTS.md` grows into a stale encyclopedia;
-- old issues look like current authority;
-- agents stack fixes instead of repairing the real owner;
-- tests are green while the running UI is wrong;
-- demo/test/production evidence gets mixed together;
-- CI from an old commit is treated as approval for a new one;
-- retries hide flaky systems;
-- high-risk work gets the same process as a typo;
-- failures lead to longer prompts instead of better guardrails.
-
-This repository turns those lessons into a reusable system.
+The GitHub workflow exposes one stable check identity: **`playbook-policy`**.
 
 ## Repository map
 
-| File | Purpose |
+| File | Authority |
 |---|---|
-| [`AGENTS.md`](AGENTS.md) | deterministic agent entrypoint and authority route |
-| [`docs/A_TO_Z_AGENT_FIRST_PROJECT.md`](docs/A_TO_Z_AGENT_FIRST_PROJECT.md) | complete A→Z playbook |
-| [`docs/PROJECT_BOOTSTRAP_CHECKLIST.md`](docs/PROJECT_BOOTSTRAP_CHECKLIST.md) | step-by-step conversion of a normal repo into an agent-legible repo |
-| [`templates/AGENTS.example.md`](templates/AGENTS.example.md) | reusable root agent-router template |
-| [`docs/MONEYFLOW_LESSONS.md`](docs/MONEYFLOW_LESSONS.md) | public-safe lessons distilled from a real agent-heavy project |
-| [`ARCHITECTURE.md`](ARCHITECTURE.md) | architecture of the operating model |
-| [`docs/PRODUCT.md`](docs/PRODUCT.md) | product contract for the playbook |
-| [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md) | present truth, not roadmap |
-| [`docs/CURRENT_WORK.md`](docs/CURRENT_WORK.md) | NOW / NEXT / BLOCKED / OWNER DECISION / HOLD |
-| [`docs/RISK_MODEL.md`](docs/RISK_MODEL.md) | Class 0→3 risk-proportional delivery |
-| [`docs/WORKFLOW.md`](docs/WORKFLOW.md) | task-to-merge-to-memory execution loop |
-| [`templates/AGENT_TASK.md`](templates/AGENT_TASK.md) | bounded task contract |
-| [`templates/WORK_PACKET.md`](templates/WORK_PACKET.md) | full packet for high-consequence/complex work |
-| [`docs/REFERENCES.md`](docs/REFERENCES.md) | primary public engineering references |
+| [`AGENTS.md`](AGENTS.md) | universal agent entrypoint |
+| [`agent-contract.json`](agent-contract.json) | machine-readable policy projection |
+| [`docs/context/README.md`](docs/context/README.md) | progressive context router |
+| [`docs/CURRENT_STATE.md`](docs/CURRENT_STATE.md) | present project truth |
+| [`docs/CURRENT_WORK.md`](docs/CURRENT_WORK.md) | NOW / NEXT / BLOCKED / decisions / hold |
+| [`docs/PRODUCT.md`](docs/PRODUCT.md) | product contract for this reference repo |
+| [`ARCHITECTURE.md`](ARCHITECTURE.md) | knowledge/execution/evidence architecture |
+| [`docs/RISK_MODEL.md`](docs/RISK_MODEL.md) | Class 0–3 risk policy |
+| [`docs/WORKFLOW.md`](docs/WORKFLOW.md) | task-to-acceptance lifecycle |
+| [`docs/engineering/AGENT_OPERATING_MODEL.md`](docs/engineering/AGENT_OPERATING_MODEL.md) | states, responsibilities, permissions, handoffs |
+| [`docs/engineering/AGENT_INTEROPERABILITY.md`](docs/engineering/AGENT_INTEROPERABILITY.md) | cross-agent discovery/adapters |
+| [`docs/engineering/ENVIRONMENT_CONTRACT.md`](docs/engineering/ENVIRONMENT_CONTRACT.md) | reproducible/isolation/observability expectations |
+| [`docs/engineering/RESEARCH_PROTOCOL.md`](docs/engineering/RESEARCH_PROTOCOL.md) | repo-first external research |
+| [`docs/engineering/VERIFICATION_MATRIX.md`](docs/engineering/VERIFICATION_MATRIX.md) | claim → evidence mapping |
+| [`docs/engineering/SECURE_DEVELOPMENT.md`](docs/engineering/SECURE_DEVELOPMENT.md) | secure development/supply-chain baseline |
+| [`docs/FAILURE_REGISTER.md`](docs/FAILURE_REGISTER.md) | generic failure → guardrail catalogue |
+| [`docs/QUALITY_SCORE.md`](docs/QUALITY_SCORE.md) | skeptical agent-readiness scorecard |
+| [`templates/`](templates/) | reusable task, packet, handoff, research, evaluation, failure templates |
 
 ## Principles
 
-1. Give agents a map, not an encyclopedia.
-2. One task, one coherent scope.
-3. Current executable truth outranks stale prose.
-4. Risk determines process weight.
-5. Machine evidence outranks self-confidence.
-6. Open work is not authority until reconciled.
-7. Separate implementation authority from irreversible operational authority.
-8. Repeated failures should become executable guardrails.
-9. Do not create documentation that has no clear owner or consumer.
-10. Completion means the claim and the evidence match.
+1. **Map, not encyclopedia.** Context is scarce.
+2. **Repository before web.** Learn current truth before external advice.
+3. **One task, one coherent scope.**
+4. **One owner per concept.** Avoid stacked authority and workaround layers.
+5. **Risk selects process.** A typo and a production migration are not the same task.
+6. **Permissions are explicit.** Technical access is not authorization.
+7. **Evidence matches claims.** Build, browser, database and provider checks prove different things.
+8. **Exact head or it did not authorize merge.**
+9. **Shared memory is reviewed and versioned. Personal memory stays personal.**
+10. **Repeated failures become guardrails.** The process should get lighter as the environment gets stronger.
 
-## External engineering references
+## Scope
 
-The playbook is original synthesis informed by public guidance from OpenAI, Google Engineering Practices, and GitHub. See [`docs/REFERENCES.md`](docs/REFERENCES.md).
+This is a **reference implementation**, not a requirement to install a multi-agent framework or copy every file into every project. Start small and add layers only when a real failure mode, domain constraint, or operating risk justifies them.
 
-## Security and public examples
+## Security
 
-This repository is public. Do not contribute credentials, private user data, sensitive provider identifiers, production logs, or private repository material. Use synthetic examples for sensitive workflows. See [`SECURITY.md`](SECURITY.md).
+This repository is public. Do not submit secrets, private logs, user data, internal provider identifiers, or personal/local agent memory. See [`SECURITY.md`](SECURITY.md) and [`docs/engineering/SECURE_DEVELOPMENT.md`](docs/engineering/SECURE_DEVELOPMENT.md).
 
-## Contributing
+## References
 
-Contributions should make agentic software delivery more legible, safe, testable, or efficient. Prefer concrete failure modes and executable guardrails over giant prompt libraries. See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+The design is grounded in current official guidance from agent-tool vendors plus established secure/software-delivery sources. See [`docs/REFERENCES.md`](docs/REFERENCES.md).
 
 ## License
 

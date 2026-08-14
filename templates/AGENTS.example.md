@@ -1,91 +1,80 @@
-# Project — agent entrypoint
+# <Project> — agent entrypoint
 
-This file is procedural hot context. Keep it short. Route deeper knowledge instead of duplicating it.
+This file is hot procedural context. Keep it short and route to deeper owners.
 
-## Product identity
+## First command
 
-- Who is the product for?
-- What are the 2–4 core user jobs?
-- What is explicitly not the product?
+```text
+<project doctor/setup diagnostic>
+```
 
-## Authority order
+The diagnostic grants no permission.
 
-When sources disagree:
+## Authority
 
-1. current executable code/migrations;
-2. intentional tests;
-3. current project state;
-4. active task/work packet;
-5. architecture/product laws;
-6. current work board;
-7. open issues/PRs;
-8. historical plans/chat.
+1. current executable code/schema/config;
+2. intentional tests/checks;
+3. current-state source;
+4. active task + explicit owner decisions;
+5. architecture/product/domain laws;
+6. current-work source;
+7. open work;
+8. history.
 
-## First-run route
+## First run
 
-1. Read `README.md`.
-2. Inspect affected code/tests.
-3. Read `docs/CURRENT_STATE.md`.
-4. Read `docs/CURRENT_WORK.md`.
-5. Load architecture/product/risk docs only as required.
-6. Confirm branch/base/worktree state.
-7. Reproduce/confirm current behavior when practical.
-8. Classify risk and permission boundaries.
-9. Research only unresolved external facts.
-10. Implement the smallest coherent change on a focused branch.
-11. Run risk-selected verification.
-12. Use independent evaluation for material work.
-13. Verify exact-head CI before merge.
-14. Reconcile current state/work after acceptance.
+1. Read affected implementation/tests before history.
+2. Read current state and current work.
+3. Route to boundary-specific context.
+4. Reproduce/confirm current behavior.
+5. Classify risk and permission scope.
+6. Research only unresolved external facts.
+7. Plan proportional to uncertainty.
+8. Work on an isolated branch/worktree.
+9. Run claim-matched evidence.
+10. Evaluate actual spec + diff.
+11. Verify exact-head checks before merge.
+12. Reconcile current truth/work after acceptance.
 
-## Domain invariants
+## Product/domain invariants
 
-Replace these examples with project laws:
+- <invariant + where it is mechanically enforced>
 
-- [invariant]
-- [invariant]
-- [invariant]
+Do not fill this with generic coding advice.
 
-If an invariant can be tested, prefer an executable test/guardrail.
+## Risk
 
-## Risk model
+- Class 0: docs/mechanical.
+- Class 1: bounded executable.
+- Class 2: user flow/UI/multi-component.
+- Class 3: security/data/auth/financial/CI/provider/operations/high-consequence.
 
-Route to `docs/RISK_MODEL.md`.
+Link to the project's detailed risk/verification matrix.
 
-State any project-specific escalators here.
+## Permissions
 
-## Permission boundaries
+Define explicit scopes for repository writes, merge, provider reads/writes and production/destructive operations. Technical access is not authorization.
 
-Define separately:
+## Commands
 
-- branch/repository writes;
-- merge authority;
-- production deployment;
-- database writes;
-- provider/security configuration;
-- destructive operations;
-- secrets/credentials.
+```text
+<setup>
+<run>
+<verify>
+<boundary-specific checks>
+```
 
-Fail closed when permission is ambiguous.
+## Rules
 
-## Verification contract
-
-Map claims to evidence:
-
-- code/static claim → lint/type/build;
-- behavior claim → focused tests;
-- UI claim → running browser/e2e/responsive proof;
-- database claim → migration/integration/isolation tests;
-- provider claim → provider read-back;
-- production claim → safe production verification when authorized.
-
-## Load-bearing traps
-
-Keep only recurring project-specific traps that are not obvious from code and are expensive to rediscover.
-
-- [trap]
-- [trap]
+- one task, one scope;
+- fix the authoritative owner;
+- do not invent requirements/data;
+- report retries/failures truthfully;
+- do not confuse test/demo/staging/production evidence;
+- no secrets/private data in repo memory;
+- hidden chat is not a handoff;
+- repeated failures should become guardrails.
 
 ## Completion
 
-A task is complete only when acceptance, risk-selected evidence, review, exact-head checks, permission boundaries, and lifecycle updates all match the completion claim.
+Define exact evidence, review, permissions, runtime/provider proof, lifecycle reconciliation and archive/retirement conditions.

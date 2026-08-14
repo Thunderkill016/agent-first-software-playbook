@@ -1,6 +1,6 @@
 ---
 name: Agent task
-a bout: Bounded executable task contract for a coding agent
+about: Bounded executable task contract for a coding agent
 title: ""
 labels: []
 assignees: []
