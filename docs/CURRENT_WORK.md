@@ -2,13 +2,13 @@
 
 ## NOW
 
-- [ ] Publish the first usable version of the playbook.
+- [ ] Add one minimal sample project showing the workflow end-to-end.
 
 ## NEXT
 
-- [ ] Add one minimal sample project showing the workflow end-to-end.
 - [ ] Add examples of failure → guardrail conversion.
 - [ ] Add CI templates without coupling the playbook to one stack.
+- [ ] Add an agent-readiness self-test that can validate repository routing automatically.
 
 ## BLOCKED
 
@@ -25,4 +25,4 @@
 
 ## RECENTLY DONE
 
-- [x] Defined the initial repository operating model.
+- [x] Published the first complete A→Z playbook, deterministic agent entrypoint, MoneyFlow lessons, bootstrap checklist, risk/workflow docs, and reusable templates.
