@@ -38,8 +38,9 @@ task contract → intentional behavioral red → bounded fix → evaluation → 
 - [x] Fixed implementation-head CI passes.
 - [x] Evaluation provenance and unverified claims are recorded.
 - [x] Evaluation-head exact CI passes.
-- [ ] Independent review returns, or its unavailability is explicitly recorded after a real request.
-- [ ] Final exact-head CI passes after the review/readiness state is frozen.
+- [x] Ready-for-review state CI passes.
+- [x] Independent review was genuinely requested; no review returned, so unavailability is explicitly recorded and no independent approval is claimed.
+- [ ] Final frozen-head CI passes after review provenance is recorded.
 - [ ] Exact head/base/reviews/threads are rechecked before merge.
 - [ ] Merge uses expected-head protection when safe.
 - [ ] This active artifact is retired and current state/work are reconciled after merge.
@@ -70,27 +71,17 @@ Tests, priority ordering, CI workflow, and dependency surface were not changed t
 
 ## Green evidence
 
-### Fixed implementation head
-
-- head: `73845c27cede0807c0b6c8fed2c9eb69a124eb71`
-- workflow run: `31826966421`
-- result: PASS
-- reference tests: `4 passed / 0 failed`
-- knowledge/public-safety: PASS
-- doctor: `ok: true`
-
-### Evaluation head
-
-- head: `ac59d87986cfd53a29b447365d3bf6cd4640e42f`
-- workflow run: `31827068944`
-- result: PASS
-- repository verification and doctor both completed successfully
+- fixed head `73845c27cede0807c0b6c8fed2c9eb69a124eb71` → run `31826966421` PASS, reference tests `4/4`;
+- evaluation head `ac59d87986cfd53a29b447365d3bf6cd4640e42f` → run `31827068944` PASS;
+- ready-for-review head `a82b69ee8ffd2b9807c12ebaca4e1e10e1e3eff6` → run `31827116151` PASS.
 
 ## Evaluation
 
 See `docs/plans/active/reference-project-red-green-evaluation.md`.
 
-Current self-review verdict: `CLEAN WITH INDEPENDENT REVIEW PENDING`.
+Current verdict: `CLEAN WITH INDEPENDENT REVIEW UNAVAILABLE`.
+
+A real GitHub Copilot review request was made after PR #7 left draft state. GitHub returned no review submission/reviewer state, so the absence is recorded rather than treated as approval.
 
 ## Research decision
 
@@ -102,4 +93,4 @@ Revert the focused PR. No external state exists.
 
 ## Next allowed action
 
-Let this state-only commit pass policy CI, mark PR #7 ready, request independent review, resolve any material findings, then freeze one final head and merge only after exact-head/base/review/thread rechecks.
+Let this frozen-evidence commit pass `playbook-policy`, then re-read exact head/base/reviews/threads and merge with expected-head protection only if still clean.
