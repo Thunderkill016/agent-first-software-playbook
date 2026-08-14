@@ -6,7 +6,7 @@ const PRIORITY_RANK = Object.freeze({
 
 export function pickNextTask(tasks) {
   const candidates = tasks
-    .filter((task) => task.status !== 'done')
+    .filter((task) => task.status === 'ready')
     .map((task, index) => ({ task, index }))
     .sort((a, b) => {
       const priorityDelta = PRIORITY_RANK[a.task.priority] - PRIORITY_RANK[b.task.priority];
