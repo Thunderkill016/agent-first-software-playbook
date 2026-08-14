@@ -18,15 +18,18 @@ Current capabilities:
 - secure-development and supply-chain baseline;
 - generic failure-to-guardrail register;
 - skeptical agent-readiness scorecard;
-- reusable task/work-packet/research/evaluation/failure templates.
+- reusable task/work-packet/research/evaluation/failure templates;
+- a dependency-free Node 24 executable reference project under `examples/reference-project/`;
+- a preserved real red → bounded fix → exact-head green lifecycle whose sample tests run in root `npm run verify`.
 
 The repository intentionally contains **no private-project case study or personal agent memory** as project authority.
 
 Known limitations:
 
-- it is a reference/playbook repository, not yet a full executable sample application;
+- the executable sample proves a bounded Class 1 domain/test lifecycle; it does not claim UI, database, provider, or production verification;
 - branch/ruleset requirements and provider security features remain provider-side configuration and are not inferred from prose;
-- truly independent evaluation requires another reviewer/model/person, not a self-review label;
+- truly independent evaluation requires another reviewer/model/person; the reference-project PR recorded independent review as unavailable rather than relabeling self-review;
+- real onboarding compatibility across multiple agent ecosystems still needs empirical validation;
 - stack/domain-specific invariants must be supplied by the project adopting the playbook.
 
 This document describes present repository truth, not roadmap.
