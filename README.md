@@ -12,6 +12,8 @@ This playbook is tool-agnostic. It can be adapted to Codex, Claude, Copilot, Gem
 
 **If you are a human:** read [`docs/A_TO_Z_AGENT_FIRST_PROJECT.md`](docs/A_TO_Z_AGENT_FIRST_PROJECT.md).
 
+**If you want to convert an existing repo now:** follow [`docs/PROJECT_BOOTSTRAP_CHECKLIST.md`](docs/PROJECT_BOOTSTRAP_CHECKLIST.md) and start from [`templates/AGENTS.example.md`](templates/AGENTS.example.md).
+
 **If you are a coding agent:** read [`AGENTS.md`](AGENTS.md) and follow its first-run algorithm.
 
 **If you want the real-project lessons behind the method:** read [`docs/MONEYFLOW_LESSONS.md`](docs/MONEYFLOW_LESSONS.md).
@@ -135,6 +137,8 @@ This repository turns those lessons into a reusable system.
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | deterministic agent entrypoint and authority route |
 | [`docs/A_TO_Z_AGENT_FIRST_PROJECT.md`](docs/A_TO_Z_AGENT_FIRST_PROJECT.md) | complete A→Z playbook |
+| [`docs/PROJECT_BOOTSTRAP_CHECKLIST.md`](docs/PROJECT_BOOTSTRAP_CHECKLIST.md) | step-by-step conversion of a normal repo into an agent-legible repo |
+| [`templates/AGENTS.example.md`](templates/AGENTS.example.md) | reusable root agent-router template |
 | [`docs/MONEYFLOW_LESSONS.md`](docs/MONEYFLOW_LESSONS.md) | public-safe lessons distilled from a real agent-heavy project |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | architecture of the operating model |
 | [`docs/PRODUCT.md`](docs/PRODUCT.md) | product contract for the playbook |
