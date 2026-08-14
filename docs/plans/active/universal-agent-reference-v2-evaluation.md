@@ -4,7 +4,7 @@
 
 - Evaluator: implementing agent self-review.
 - Independent from implementation: **no**.
-- GitHub Copilot code review was requested using the official reviewer identity, but no review submission was returned at the time this evaluation was written. The request itself is **not** counted as independent evidence.
+- GitHub Copilot code review was requested using the official reviewer identity, but no review submission was returned. The request itself is **not** counted as independent evidence.
 - Task/work packet: `docs/plans/active/universal-agent-reference-v2.md`.
 
 ## Scope reviewed
@@ -27,39 +27,55 @@ Review focus:
 | Acceptance | Evidence | Result |
 |---|---|---|
 | Vendor/project-neutral root contract | rewritten `README.md`, `AGENTS.md`, A→Z guide | PASS |
-| Private project case-study removed | `docs/MONEYFLOW_LESSONS.md` absent from branch | PASS |
+| Private project case-study removed | legacy case-study file absent from branch | PASS |
 | One canonical shared agent authority | root `AGENTS.md` + thin adapters + interoperability doc | PASS |
-| Major agent ecosystems routed from official docs | references + interoperability matrix | PASS |
+| Broad agent interoperability routed from official docs | AGENTS open format; Codex; Jules; Copilot; Claude Code; Gemini CLI; Cursor; Windsurf; Cline; Aider | PASS |
 | Machine-readable policy mirrors repository contract | `agent-contract.json` + `scripts/agent-policy.mjs` | PASS |
-| Deterministic knowledge drift checks | `scripts/check-knowledge.mjs` | PASS on first PR policy run; must rerun on final head |
-| Public-safety guard | `scripts/check-public-safety.mjs` | PASS on first PR policy run; must rerun on final head |
-| Least-privilege CI | workflow `permissions: contents: read`; first run log confirmed Contents: read | PASS |
-| Immutable Actions pins | checker + exact full-SHA pins | PASS; pins upgraded after evaluation finding |
-| Current supported Actions runtime | checkout/setup-node v6 + Node 24 | FIXED; final-head run required |
-| Issue-template metadata valid | knowledge checker validates `name:`/`about:` | PASS on first run after typo correction |
-| Exact-head evidence | final head CI and review state | PENDING |
-| Independent evaluation | Copilot requested, no review returned | UNVERIFIED / not claimed |
+| Deterministic knowledge drift checks | final implementation-head `playbook-policy` | PASS |
+| Public-safety guard | final implementation-head `playbook-policy` | PASS |
+| Least-privilege CI | log confirmed `Contents: read`; checkout credentials not persisted | PASS |
+| Immutable Actions pins | checker + checkout/setup-node v6 full commit SHAs | PASS |
+| Supported Actions/runtime baseline | Node 24.19; contract requires Node 24+ | PASS |
+| Issue-template metadata valid | knowledge checker validates `name:`/`about:` | PASS |
+| Independent evaluation | Copilot requested, no review returned | UNAVAILABLE / not claimed |
 | Provider/ruleset enforcement | intentionally owner/provider decision | NOT APPLICABLE to branch write; not claimed |
+
+## Final implementation-head CI
+
+`playbook-policy` run `31826162489` completed successfully for PR head `ba599bd6b7c2cb7bcc065920f89c9d662116d495` / GitHub merge candidate `04c724edc6fae694a0ffc5004c6d25c418be256e`.
+
+Observed in the successful job log:
+
+- GitHub token: `Contents: read`, `Metadata: read`;
+- checkout v6 exact SHA `d23441a48e516b6c34aea4fa41551a30e30af803`;
+- setup-node v6 exact SHA `249970729cb0ef3589644e2896645e5dc5ba9c38`;
+- `persist-credentials: false`;
+- Node `24.19.0`;
+- `Knowledge contract: PASS (37 markdown files checked)`;
+- `Public-safety contract: PASS (49 tracked files inspected)`;
+- doctor `ok: true`, runtime `ok: true`, no missing required files.
+
+This evaluation update is lifecycle/evidence metadata only and must itself receive the same policy check before merge.
 
 ## Findings
 
-### P1 — CI used a deprecated runtime/action generation
+### P1 — CI used a deprecated runtime/action generation — RESOLVED
 
-**Observed evidence:** the first successful `playbook-policy` log warned that Node 20 was deprecated and that `actions/checkout@v4` / `actions/setup-node@v4` were being forced onto Node 24 by the runner.
+**Observed evidence:** the first successful policy run warned that Node 20 was deprecated and that checkout/setup-node v4 were being forced onto Node 24 by the runner.
 
 **Why this mattered:** a best-practice reference repo should not rely on a compatibility fallback while teaching deterministic environment policy.
 
-**Fix:** upgraded to official checkout/setup-node v6 commit pins, configured Node 24, disabled unnecessary package-manager caching, disabled persisted checkout credentials, declared `engines.node >=24`, added runtime baseline to `agent-contract.json`, taught `agent:doctor` to validate/report the runtime, and added a minimal lockfile.
+**Fix:** upgraded to official checkout/setup-node v6 commit pins, configured Node 24, disabled unnecessary package-manager caching, disabled persisted checkout credentials, declared `engines.node >=24`, added the runtime baseline to `agent-contract.json`, taught `agent:doctor` to validate/report runtime compatibility, and added a minimal lockfile.
 
-**Status:** fixed in branch; requires final-head CI confirmation.
+**Regression proof:** the later successful run used Node 24.19 and v6 actions without the earlier Node-20 deprecation warning.
 
-### P2 — initial issue-template metadata typo
+### P2 — initial issue-template metadata typo — RESOLVED
 
-**Observed:** the first draft used `a bout:` instead of `about:`.
+**Observed:** the first draft used an invalid `about` key spelling.
 
 **Fix:** corrected metadata and added a knowledge-contract check so future copies fail CI when required frontmatter fields disappear.
 
-**Status:** fixed and mechanically guarded.
+**Regression proof:** knowledge contract passed after the checker and correction were present.
 
 ## Counterexamples challenged
 
@@ -72,21 +88,28 @@ Review focus:
 - [x] Build/CI status presented as runtime/product proof — reference repo claims only policy/tooling evidence.
 - [x] Copilot review request presented as completed independent review — explicitly not claimed.
 - [x] Old successful workflow treated as final after head changed — explicitly rejected.
-- [x] Movable GitHub Action tags accepted as supply-chain pinning — final workflow uses full commit SHAs.
+- [x] Movable GitHub Action tags accepted as supply-chain pinning — workflow uses full commit SHAs.
+- [x] One vendor treated as universal authority — the contract is vendor-neutral with verified discovery adapters/native paths.
 
 ## Unverified claims
 
-- Final exact-head CI after Node 24/evaluation/research updates.
-- Truly independent code review (no reviewer submission yet).
+- Truly independent code review (no reviewer submission returned).
 - Provider branch/ruleset requirements, because no provider mutation is authorized in this work packet.
-- Real cross-tool onboarding execution; official discovery compatibility is documented, but end-to-end empirical runs across every tool remain future work.
+- End-to-end empirical onboarding runs across every agent ecosystem; official discovery compatibility is documented, but real multi-tool trials remain future work.
+- Stack/domain-specific invariants, because this is a generic reference repository rather than an application product.
 
 ## Verdict
 
-`CHANGES_REQUIRED` until final-head `playbook-policy` succeeds.
+`CLEAN WITH INDEPENDENT REVIEW UNAVAILABLE`
 
-After final-head CI succeeds and no material review thread appears, the self-evaluation verdict may move to `CLEAN WITH INDEPENDENT REVIEW UNAVAILABLE`, which is intentionally weaker than claiming independent approval.
+Meaning:
+
+- no material self-evaluation finding remains open;
+- exact implementation-head policy evidence is green;
+- independent review is **not** claimed;
+- provider/ruleset enforcement is **not** claimed;
+- this metadata update must pass the same exact-head policy gate before merge.
 
 ## Next allowed action
 
-Run/observe `playbook-policy` on the exact current head, re-check PR review threads and base/head, then update the packet/PR evidence before any merge.
+Observe policy CI for this evaluation commit. If green, transition the work packet to `ready_for_review`, then require one final policy check on that state-only commit before merge.
